@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My ToDo List</title>
+    <style>
+        
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.header p {
+    font-size: 1.1em;
+    opacity: 0.9;
+}
+
+.add-task-section {
+    background: #f8f9fa;
+    padding: 30px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.add-task-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #495057;
+    font-size: 0.9em;
+}
+
+.form-group input,
+.form-group select {
+    padding: 12px 15px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+    color: white;
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.btn-danger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #51cf66 0%, #40c057 100%);
+    color: white;
+    padding: 8px 15px;
+    font-size: 0.9em;
+}
+
+.btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(81, 207, 102, 0.3);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffd43b 0%, #fab005 100%);
+    color: #495057;
+    padding: 6px 12px;
+    font-size: 0.8em;
+}
+
+.btn-warning:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(255, 212, 59, 0.3);
+}
+
+.tasks-section {
+    padding: 30px;
+}
+
+.section-title {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+    color: #495057;
+    font-weight: 300;
+}
+
+.tasks-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.tasks-table th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.tasks-table td {
+    padding: 15px;
+    border-bottom: 1px solid #e9ecef;
+    vertical-align: middle;
+}
+
+.tasks-table tr:hover {
+    background: #f8f9fa;
+}
+
+.tasks-table tr:last-child td {
+    border-bottom: none;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-ongoing {
+    background: #e3f2fd;
+    color: #1976d2;
+}
+
+.status-completed {
+    background: #e8f5e8;
+    color: #2e7d32;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.priority-controls {
+    display: flex;
+    gap: 5px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6c757d;
+}
+
+.empty-state h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.empty-state p {
+    font-size: 1.1em;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .add-task-form {
+        grid-template-columns: 1fr;
+    }
+    
+    .tasks-table {
+        font-size: 0.9em;
+    }
+    
+    .tasks-table th,
+    .tasks-table td {
+        padding: 10px;
+    }
+    
+    .actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+.task-row {
+    transition: all 0.3s ease;
+}
+
+.task-row.completed {
+    opacity: 0.7;
+}
+
+.task-row.completed .task-text {
+    text-decoration: line-through;
+}
+
+    </style>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>My ToDo List</h1>
+            <p>Stay organized and get things done efficiently</p>
+        </div>
+
+        <div class="add-task-section">
+            <form class="add-task-form" method="POST" action="/add_task">
+                <div class="form-group">
+                    <label for="task">Task Description</label>
+                    <input type="text" id="task" name="task" required placeholder="Enter your task...">
+                </div>
+                <div class="form-group">
+                    <label for="start_date">Start Date</label>
+                    <input type="date" id="start_date" name="start_date" required>
+                </div>
+                <div class="form-group">
+                    <label for="target_date">Target Date</label>
+                    <input type="date" id="target_date" name="target_date" required>
+                </div>
+                        <!-- 👇 Add this -->
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="priority">Priority</label>
+                    <input type="number" id="priority" name="priority" min="1" max="5" value="1" required>
+                </div>
+                <!-- 👆 End added section -->
+
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add Task</button>
+                </div>
+            </form>
+        </div>
+        <div class="tasks-section">
+            <h2 class="section-title">Your Tasks</h2>
+            
+            <!-- This section will be populated by your Python backend -->
+            <!-- Example of how tasks will look: -->
+            <table class="tasks-table">
+                <table class="tasks-table">
+  <thead>
+    <tr>
+      <th>Sl. No.</th>
+      <th>Task</th>
+      <th>Start Date</th>
+      <th>Target Date</th>
+      <th>Status</th>
+      <th>Priority</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+                {% for task in tasks %}
+                <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ task.task }}</td>
+                <td>{{ task.start_date }}</td>
+                <td>{{ task.target_date }}</td>
+                <td><span class="status-badge status-{{task.status|lower}}">{{ task.status }}</span></td>
+                <td>{{ task.priority }}</td>
+                <td><!-- Actions here --></td>
+                <td class="actions">
+    <!-- 🔁 Toggle Status Button -->
+    <form method="POST" action="/toggle_status/{{ task.id }}" style="display:inline;">
+        <button type="submit" class="btn {% if task.status == 'Ongoing' %}btn-success{% else %}btn-warning{% endif %}">
+            {% if task.status == 'Ongoing' %}
+                ✔ Mark Completed
+            {% else %}
+                ↩️ Mark Ongoing
+            {% endif %}
+        </button>
+    </form>
+
+    <!-- 🗑 DELETE BUTTON -->
+    <form method="POST" action="/delete/{{ task.id }}" style="display:inline;">
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this task?')">🗑 Delete</button>
+    </form>
+</td>
+
+                </tr>
+                {% endfor %}
+                {% if tasks|length == 0 %}
+                <tr>
+                <td colspan="7" class="empty-state">
+                    No tasks yet. Add your first task above!
+                </td>
+                </tr>
+                {% endif %}
+            </tbody>
+            </table>
+
+            <!-- Empty state - show when no tasks exist -->
+            <!-- <div class="empty-state">
+                <h3>No tasks yet</h3>
+                <p>Add your first task above to get started!</p>
+            </div> -->
+        </div>
+    </div>
+</body>
+</html>
